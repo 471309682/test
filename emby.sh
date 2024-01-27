@@ -53,6 +53,13 @@ if [ $1 ]; then
         mkdir -p $1/temp
 	rm -rf $1/config 
 	echo "清理完成"
+        free_size=$(df -P $1 |tail -n1|awk '{print $4}')
+	free_size=$((free_size))
+        if [ "$free_size" -le 146800640 ]; then
+		free_size_G=$((free_size/1024/1024))
+                echo "空间剩余容量不够： $free_size_G""G 小于最低要求140G"
+                exit 1
+        fi
 
 	mkdir -p $1/xiaoya
 	mkdir -p $1/config
